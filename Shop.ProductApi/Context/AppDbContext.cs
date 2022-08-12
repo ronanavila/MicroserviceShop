@@ -38,4 +38,13 @@ public class AppDbContext : DbContext
             });
 
     }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder
+            .LogTo(x => Console.WriteLine(x))
+            .EnableSensitiveDataLogging();
+
+        base.OnConfiguring(optionsBuilder);
+    }
 }

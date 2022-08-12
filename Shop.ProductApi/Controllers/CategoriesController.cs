@@ -28,7 +28,7 @@ public class CategoriesController : ControllerBase
     [HttpGet("products")]
     public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategoriesProducts()
     {
-        var categoriesDTO = await _categoryService.GetCategories();
+        var categoriesDTO = await _categoryService.GetCategoriesProducts();
         if (categoriesDTO is null)
             return NotFound("Category Not Found");
 

@@ -1,5 +1,6 @@
 ﻿using Shop.ProductApi.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Shop.ProductApi.DTOs;
 
@@ -26,6 +27,9 @@ public class ProductDTO
 
     public string? ImageUrl { get; set; }
 
+    public string? CategoryName { get; set; }
+
+    [JsonIgnore]
     public Category? Category { get; set; }
     public int CategoryId { get; set; }
 }
