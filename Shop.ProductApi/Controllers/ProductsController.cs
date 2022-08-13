@@ -48,14 +48,11 @@ namespace Shop.ProductApi.Controllers
             return new CreatedAtRouteResult("GetProduct", new { id = ProductDTO.Id }, ProductDTO);
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult<ProductDTO>> Put(int id, [FromBody] ProductDTO ProductDTO)
+        [HttpPut()]
+        public async Task<ActionResult> Put([FromBody] ProductDTO ProductDTO)
         {
-            if (id != ProductDTO.Id)
-                return BadRequest();
-
             if (ProductDTO is null)
-                return BadRequest();
+                return BadRequest("Invalid Data");
 
             await _productService.UpdateProduct(ProductDTO);
 

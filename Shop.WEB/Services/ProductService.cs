@@ -1,5 +1,6 @@
 ﻿using Shop.WEB.Models;
 using Shop.WEB.Services.Interfaces;
+using System.Text;
 using System.Text.Json;
 
 namespace Shop.WEB.Services;
@@ -18,28 +19,105 @@ public class ProductService : IProductService
         _httpClientFactory = httpClientFactory;
         _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true};
     }
-    public Task<IEnumerable<ProductViewModel>> GetAllProducts()
+    public async Task<IEnumerable<ProductViewModel>> GetAllProducts()
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient("ProductApi");
+
+        using (var response = await client.GetAsync(apiEndpoint))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+
+                _productsVM = await JsonSerializer.DeserializeAsync<IEnumerable<ProductViewModel>>(apiResponse, _options);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        return _productsVM;
     }
 
-    public Task<ProductViewModel> GetProductById(int id)
+    public async Task<ProductViewModel> GetProductById(int id)
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient("ProductApi");
+
+        using (var response = await client.GetAsync(apiEndpoint + id))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+
+                _productViewModel = await JsonSerializer.DeserializeAsync<ProductViewModel>(apiResponse, _options);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        return _productViewModel;
     }
 
-    public Task<ProductViewModel> CreateProduct(ProductViewModel productViewModel)
+    public async Task<ProductViewModel> CreateProduct(ProductViewModel productViewModel)
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient("ProductApi");
+
+        StringContent content = new StringContent(JsonSerializer.Serialize(productViewModel), Encoding.UTF8, "application/json");
+
+        using (var response = await client.PostAsync(apiEndpoint, content))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+
+                _productViewModel = await JsonSerializer.DeserializeAsync<ProductViewModel>(apiResponse, _options);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        return _productViewModel;
     }
 
-    public Task<ProductViewModel> UpdateProduct(ProductViewModel productViewModel)
+    public async Task<ProductViewModel> UpdateProduct(ProductViewModel productViewModel)
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient("ProductApi");
+
+        ProductViewModel productToUpdate = new ProductViewModel();    
+
+        using (var response = await client.PutAsJsonAsync(apiEndpoint, productViewModel))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+
+                productToUpdate = await JsonSerializer.DeserializeAsync<ProductViewModel>(apiResponse, _options);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        return productToUpdate;
     }
 
-    public Task<bool> DeleteProductById()
+    public async Task<bool> DeleteProductById(int id)
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient("ProductApi");
+
+        using (var response = await client.DeleteAsync(apiEndpoint + id))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }      
+        }
+        return false;
     }
 }
