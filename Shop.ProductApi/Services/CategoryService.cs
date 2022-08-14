@@ -36,7 +36,7 @@ public class CategoryService : ICategoryService
 
     public async Task AddCategory(CategoryDTO categoryDTO)
     {
-       var categoryEntity = _mapper.Map<Category>(categoryDTO);
+        var categoryEntity = _mapper.Map<Category>(categoryDTO);
         await _categoryRepository.Create(categoryEntity);
         categoryDTO.Id = categoryEntity.Id;
     }

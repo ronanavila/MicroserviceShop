@@ -30,7 +30,7 @@ public class ProductsController : Controller
     public async Task<IActionResult> CreateProduct()
     {
         ViewBag.CategoryId = new SelectList(await _categoryService.GetAllCategories(), "Id", "Name");
-        return View();    
+        return View();
     }
 
     [HttpPost]
@@ -79,8 +79,8 @@ public class ProductsController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> DeleteProduct(int id)
-    {      
+    public async Task<ActionResult<ProductViewModel>> DeleteProduct(int id)
+    {
         var result = await _productService.GetProductById(id);
         if (result is null)
             return View("Error");

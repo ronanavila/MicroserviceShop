@@ -17,7 +17,7 @@ public class ProductService : IProductService
     public ProductService(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
-        _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true};
+        _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
     }
     public async Task<IEnumerable<ProductViewModel>> GetAllProducts()
     {
@@ -88,7 +88,7 @@ public class ProductService : IProductService
     {
         var client = _httpClientFactory.CreateClient("ProductApi");
 
-        ProductViewModel productToUpdate = new ProductViewModel();    
+        ProductViewModel productToUpdate = new ProductViewModel();
 
         using (var response = await client.PutAsJsonAsync(apiEndpoint, productViewModel))
         {
@@ -116,7 +116,7 @@ public class ProductService : IProductService
             if (response.IsSuccessStatusCode)
             {
                 return true;
-            }      
+            }
         }
         return false;
     }

@@ -22,7 +22,7 @@ public class CategoryService : ICategoryService
 
         IEnumerable<CategoryViewModel> categories;
 
-        using ( var response = await client.GetAsync(apiEndpoint))
+        using (var response = await client.GetAsync(apiEndpoint))
         {
             if (response.IsSuccessStatusCode)
             {

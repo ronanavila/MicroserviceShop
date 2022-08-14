@@ -46,7 +46,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<CategoryDTO>> Post([FromBody]CategoryDTO categoryDTO)
+    public async Task<ActionResult<CategoryDTO>> Post([FromBody] CategoryDTO categoryDTO)
     {
         if (categoryDTO is null)
             return BadRequest("Invalid Data");

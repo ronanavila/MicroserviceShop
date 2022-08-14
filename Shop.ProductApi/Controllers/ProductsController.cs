@@ -24,7 +24,7 @@ namespace Shop.ProductApi.Controllers
 
             return Ok(ProductsDTO);
         }
-       
+
 
         [HttpGet("{id:int}", Name = "GetProduct")]
         public async Task<ActionResult<ProductDTO>> Get(int id)
@@ -62,14 +62,14 @@ namespace Shop.ProductApi.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<ProductDTO>> Delete(int id)
         {
-            var ProductDTO = await _productService.GetProductByID(id);
+            var productDTO = await _productService.GetProductByID(id);
 
-            if (ProductDTO is null)
+            if (productDTO is null)
                 return NotFound("Product Not Found");
 
             await _productService.RemoveProduct(id);
 
-            return Ok(ProductDTO);
+            return Ok(productDTO);
         }
     }
 }

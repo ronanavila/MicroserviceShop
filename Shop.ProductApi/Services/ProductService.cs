@@ -21,7 +21,7 @@ public class ProductService : IProductService
         var ProductsEntity = await _productRepository.GetAll();
         return _mapper.Map<IEnumerable<ProductDTO>>(ProductsEntity);
     }
- 
+
 
     public async Task<ProductDTO> GetProductByID(int id)
     {
@@ -44,7 +44,7 @@ public class ProductService : IProductService
 
     public async Task RemoveProduct(int id)
     {
-        var productEntity = _productRepository.GetById(id);
+        var productEntity = await _productRepository.GetById(id);
         await _productRepository.Delete(productEntity.Id);
     }
 }

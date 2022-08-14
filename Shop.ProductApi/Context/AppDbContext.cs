@@ -5,11 +5,11 @@ namespace Shop.ProductApi.Context;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
-      
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -22,7 +22,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Product>().Property(c => c.Name).HasMaxLength(100).IsRequired();
         modelBuilder.Entity<Product>().Property(c => c.Description).HasMaxLength(255).IsRequired();
         modelBuilder.Entity<Product>().Property(c => c.ImageUrl).HasMaxLength(255).IsRequired();
-        modelBuilder.Entity<Product>().Property(c => c.Price).HasPrecision(16,2);
+        modelBuilder.Entity<Product>().Property(c => c.Price).HasPrecision(16, 2);
 
 
         modelBuilder.Entity<Category>().HasData(
