@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{5D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackEnd", "BackEnd", "{D1D2CB13-C4BE-4A90-B46A-D0BE634CB1A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.IdentityServer", "Shop.IdentityServer\Shop.IdentityServer.csproj", "{DFCEFECB-FE5C-4A46-9AC7-5797EF7723AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.IdentityServer", "Shop.IdentityServer\Shop.IdentityServer.csproj", "{DFCEFECB-FE5C-4A46-9AC7-5797EF7723AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

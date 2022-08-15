@@ -38,8 +38,8 @@ public class IdentityConfiguration
             ClientId = "shop",
             ClientSecrets = {new Secret("ziriguidum#mudiugiriz".Sha256())},
             AllowedGrantTypes = GrantTypes.Code,
-            RedirectUris = {"https://localhost:7165/signin-oidc"},
-            PostLogoutRedirectUris = {"https://localhost:7165/signout-callback-oidc"},
+            RedirectUris = {"https://localhost:7132/signin-oidc"},
+            PostLogoutRedirectUris = {"https://localhost:7132/signout-callback-oidc"},
             AllowedScopes = new List<string>
             {
                 IdentityServerConstants.StandardScopes.OpenId,
