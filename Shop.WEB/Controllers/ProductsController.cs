@@ -9,6 +9,7 @@ using Shop.WEB.Services.Interfaces;
 
 namespace Shop.WEB.Controllers;
 
+[Authorize(Roles = Role.Admin)]
 public class ProductsController : Controller
 {
     private readonly IProductService _productService;
@@ -22,7 +23,12 @@ public class ProductsController : Controller
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProductViewModel>>> Index()
     {
-        var result = await _productService.GetAllProducts(await GetAccessToken());
+        var token = await GetAccessToken();
+        
+        if (token is null)
+            return RedirectToAction("Login", "Home");
+
+        var result = await _productService.GetAllProducts(token);
 
         if (result is null)
             return View("Error");
@@ -38,7 +44,6 @@ public class ProductsController : Controller
     }
 
     [HttpPost]
-    [Authorize]
     public async Task<IActionResult> CreateProduct(ProductViewModel productViewModel)
     {
         var token = await GetAccessToken();
@@ -70,8 +75,7 @@ public class ProductsController : Controller
         return View(result);
     }
 
-    [HttpPost]
-    [Authorize]
+    [HttpPost] 
     public async Task<IActionResult> UpdateProduct(ProductViewModel productViewModel)
     {
         var token = await GetAccessToken();
@@ -89,8 +93,7 @@ public class ProductsController : Controller
         return View(productViewModel);
     }
 
-    [HttpGet]
-    [Authorize]
+    [HttpGet] 
     public async Task<ActionResult<ProductViewModel>> DeleteProduct(int id)
     {
         var result = await _productService.GetProductById(id, await GetAccessToken());
@@ -100,8 +103,7 @@ public class ProductsController : Controller
         return View(result);
     }
 
-    [HttpPost(), ActionName("DeleteProduct")]
-    [Authorize(Roles = Role.Admin)]
+    [HttpPost(), ActionName("DeleteProduct")] 
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var result = await _productService.DeleteProductById(id, await GetAccessToken());
