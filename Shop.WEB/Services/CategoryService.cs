@@ -1,5 +1,6 @@
 ﻿using Shop.WEB.Models;
 using Shop.WEB.Services.Interfaces;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace Shop.WEB.Services;
@@ -16,9 +17,10 @@ public class CategoryService : ICategoryService
         _option = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
     }
 
-    public async Task<IEnumerable<CategoryViewModel>> GetAllCategories()
+    public async Task<IEnumerable<CategoryViewModel>> GetAllCategories(string token)
     {
         var client = _clientFactory.CreateClient("ProductApi");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         IEnumerable<CategoryViewModel> categories;
 
