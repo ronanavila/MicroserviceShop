@@ -11,8 +11,8 @@ using Shop.IdentityServer.Data;
 namespace Shop.IdentityServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220814221421_DatabaseIdentityServer")]
-    partial class DatabaseIdentityServer
+    [Migration("20220819220409_Inital")]
+    partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -78,7 +78,7 @@ public class DatabaseIdentityServerInitializer : IDatabaseSeedInitializer
                 UserName = "client1",
                 NormalizedUserName = "CLIENT1",
                 Email = "client1@client.com.br",
-                NormalizedEmail = "ADMIN1@ADMIN.COM.BR",
+                NormalizedEmail = "CLIENT1@CLIENT.COM.BR",
                 EmailConfirmed = true,
                 LockoutEnabled = false,
                 PhoneNumber = "+55 (16) 88888-9999",
@@ -90,7 +90,7 @@ public class DatabaseIdentityServerInitializer : IDatabaseSeedInitializer
             IdentityResult resultClient = _userManager.CreateAsync(client, "Dono#2022").Result;
             if (resultClient.Succeeded)
             {
-                _userManager.AddToRoleAsync(client, IdentityConfiguration.Admin).Wait();
+                _userManager.AddToRoleAsync(client, IdentityConfiguration.Client).Wait();
 
                 var adminClaims = _userManager.AddClaimsAsync(client, new Claim[]
                 {
