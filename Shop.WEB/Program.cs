@@ -8,14 +8,22 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddHttpClient("ProductApi", h =>
+builder.Services.AddHttpClient<IProductService, ProductService>("ProductApi", h =>
 {
     h.BaseAddress = new Uri(builder.Configuration["ServiceUri:ProductApi"]);
+    h.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+    h.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+    h.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-ProductApi");
+});
+
+builder.Services.AddHttpClient<ICartService, CartService>("CartApi", h =>
+{
+    h.BaseAddress = new Uri(builder.Configuration["ServiceUri:CartApi"]);
 });
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-
+builder.Services.AddScoped<ICartService, CartService>();
 
 builder.Services.AddAuthentication(options =>
 {

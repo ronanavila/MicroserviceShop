@@ -7,5 +7,5 @@ public class CartItemDTO
     public int ProductId { get; set; }
     public int CartHeaderId { get; set; }
     public ProductDTO Product { get; set; } = new ProductDTO();
-    public CartHeaderDTO CartHeader { get; set; } = new CartHeaderDTO();
+    //public CartHeaderDTO CartHeader { get; set; } = new CartHeaderDTO();
 }
