@@ -11,11 +11,13 @@ namespace Shop.WEB.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IProductService _productService;
+        private readonly ICartService _cartService;
 
-        public HomeController(ILogger<HomeController> logger, IProductService productService)
+        public HomeController(ILogger<HomeController> logger, IProductService productService, ICartService cartService)
         {
             _logger = logger;
             _productService = productService;
+            _cartService = cartService;
         }
 
         public async Task<IActionResult> Index()
@@ -29,13 +31,50 @@ namespace Shop.WEB.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<ProductViewModel>> ProductDetails(int id)
         {
-            var result = await _productService.GetProductById(id, string.Empty);
+            var token = await HttpContext.GetTokenAsync("access_token");
+
+            var result = await _productService.GetProductById(id, token);
             if (result is null)
                 return View("Error");
 
             return View(result);
+        }
+
+        [HttpPost]
+        [ActionName("ProductDetails")]
+        [Authorize]
+        public async Task<ActionResult<CartViewModel>> ProductDetailsPost(ProductViewModel productView)
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+
+            CartViewModel cart = new()
+            {
+                CartHeader = new CartHeaderViewModel
+                {
+                    UserId = User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value
+                }
+            };
+
+            CartItemViewModel cartItem = new()
+            {
+                Quantity = productView.Quantity,
+                ProductId = productView.Id,
+                Product = await _productService.GetProductById(productView.Id, token)
+            };
+
+            List<CartItemViewModel> cartItemsVM = new List<CartItemViewModel>();
+            cartItemsVM.Add(cartItem);
+            cart.CartItems = cartItemsVM;
+
+            var result = await _cartService.AddItemToCartAsync(cart, token);
+
+            if (result is not null)
+                return RedirectToAction(nameof(Index));
+
+            return View(productView);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -52,7 +91,7 @@ namespace Shop.WEB.Controllers
         }
 
         public IActionResult Logout()
-        {           
+        {
             return SignOut("Cookies", "oidc");
         }
     }
