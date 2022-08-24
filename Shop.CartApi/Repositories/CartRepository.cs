@@ -41,13 +41,15 @@ public class CartRepository : ICartRepository
 
             _appDbContext.CartItems.Remove(cartItem);
 
+            await _appDbContext.SaveChangesAsync();
+
             if (totalItems == 1)
             {
                 var cartHeaderRemove = await _appDbContext.CartHeaders.FirstOrDefaultAsync(x => x.Id == cartItem.CartHeaderId);
                 _appDbContext.CartItems.Remove(cartItem);
+                await _appDbContext.SaveChangesAsync();
             }
-
-            await _appDbContext.SaveChangesAsync();
+            
             return true;
         }
         catch (Exception)
