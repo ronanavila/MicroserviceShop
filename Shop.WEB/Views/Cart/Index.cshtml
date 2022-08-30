@@ -6,6 +6,7 @@
         <br />
         <input asp-for="CartHeader.UserId" hidden />
         <input asp-for="CartHeader.Id" hidden />
+        <input asp-for="CartItems" hidden />
         <div>
             <div class="card border mt-4 container">
                 <div class="card-header bg-dark text-light m-lg-0 row">
@@ -57,7 +58,7 @@
                             </div>
                             <div class="col-2 col-md-2 pt-md-4">
                                 <span style="font-size:17px; font-weight:bolder">
-                                    @item.Product.Quantity
+                                    @item.Quantity
                                 </span>
                             </div>
                             <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
@@ -70,11 +71,22 @@
                     }
                     <div class="row">
                         <div class="col-6">
-                            <span style="font-weight:bold">Dicount:</span>
-                            <input asp-for="CartHeader.CuponCode" />
-                            <button type="submit" asp-action="ApplyDiscount" class="btn btn-info" style="font-weight:bold;">
-                                Apply
-                            </button>
+                            @if (string.IsNullOrEmpty(Model.CartHeader.CuponCode))
+                            {
+                                <span style="font-weight:bold">Dicount:</span>
+                                <input asp-for="CartHeader.CuponCode" />
+                                <button type="submit" asp-action="ApplyCoupon" class="btn btn-info" style="font-weight:bold;">
+                                    Apply
+                                </button>
+                            }
+                            else
+                            {
+                                <span style="font-weight:bold">Dicount:</span>
+                                <input asp-for="CartHeader.CuponCode" disabled/>
+                                <button type="submit" asp-action="DeleteCoupon" class="btn btn-info" style="font-weight:bold;">
+                                    Remove
+                                </button>
+                            }                            
                         </div>
                         <div class="col-6 text-end">
                             <span class="text-danger" style="font-size:25px; font-weight:bolder">

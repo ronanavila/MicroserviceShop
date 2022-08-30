@@ -29,6 +29,7 @@ public class CartController : Controller
         return View(cartView);
     }
 
+    [Authorize]
     private async Task<CartViewModel?> GetCartByUser()
     {
         var cart = await _cartService.GetCartByUserIdAsync(GetUserId(), await GetAccessToken());
@@ -43,6 +44,35 @@ public class CartController : Controller
         return cart;
     }
 
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> ApplyCoupon(CartViewModel cartView)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _cartService.ApplyCouponAsync(cartView, await GetAccessToken());
+
+            if (result)
+                return RedirectToAction(nameof(Index));
+        }
+
+        return View();
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> DeleteCoupon()
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _cartService.RemoveCouponAsync(GetUserId(), await GetAccessToken());
+
+            if (result)
+                return RedirectToAction(nameof(Index));
+        }
+
+        return View();
+    }
     public async Task<IActionResult> RemoveItem(int id)
     {
         var result = await _cartService.RemoveItemFromCartAsync(id, await GetAccessToken());
