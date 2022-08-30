@@ -2,8 +2,8 @@
 
 namespace Shop.DiscountApi.DTOs;
 
-public class CoupontDTO
-{
+public class CouponDTO
+{ 
     public int CouponId { get; set; }
     [Required]
     public string? CouponCode { get; set; }

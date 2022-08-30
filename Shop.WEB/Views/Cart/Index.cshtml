@@ -75,7 +75,7 @@
                             {
                                 <span style="font-weight:bold">Dicount:</span>
                                 <input asp-for="CartHeader.CuponCode" />
-                                <button type="submit" asp-action="ApplyCoupon" class="btn btn-info" style="font-weight:bold;">
+                                <button type="submit" asp-action="ApplyCoupon" class="btn btn-info" class="btn-success"  style="font-weight:bold;">
                                     Apply
                                 </button>
                             }
@@ -83,7 +83,7 @@
                             {
                                 <span style="font-weight:bold">Dicount:</span>
                                 <input asp-for="CartHeader.CuponCode" disabled/>
-                                <button type="submit" asp-action="DeleteCoupon" class="btn btn-info" style="font-weight:bold;">
+                                <button type="submit" asp-action="DeleteCoupon" class="btn btn-info" class="btn-danger" style="font-weight:bold;">
                                     Remove
                                 </button>
                             }                            

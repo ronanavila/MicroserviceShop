@@ -16,9 +16,9 @@ public class CouponRepository : ICouponRepository
         _mapper = mapper;
     }
 
-    public async Task<CoupontDTO> GetCoupontByCode(string code)
+    public async Task<CouponDTO> GetCoupontByCode(string couponcode)
     {
-        var coupon = await _context.Coupons.FirstOrDefaultAsync(c => c.CouponCode == code);
-        return _mapper.Map<CoupontDTO>(coupon);
+        var coupon = await _context.Coupons.FirstOrDefaultAsync(c => c.CouponCode == couponcode);
+        return _mapper.Map<CouponDTO>(coupon);
     }
 }

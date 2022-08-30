@@ -9,12 +9,13 @@ namespace Shop.WEB.Controllers;
 public class CartController : Controller
 {
     private readonly ICartService _cartService;
-
-    public CartController(ICartService cartService)
+    private readonly ICouponService _couponService;
+    public CartController(ICartService cartService, ICouponService couponService)
     {
         _cartService = cartService;
+        _couponService = couponService;
     }
-      
+
     [Authorize]
     public async Task<IActionResult> Index()
     {
@@ -32,35 +33,38 @@ public class CartController : Controller
     [Authorize]
     private async Task<CartViewModel?> GetCartByUser()
     {
-        var cart = await _cartService.GetCartByUserIdAsync(GetUserId(), await GetAccessToken());
+        var token = await GetAccessToken();
+        var cart = await _cartService.GetCartByUserIdAsync(GetUserId(),token );
 
         if(cart?.CartHeader is not null)
         {
-            foreach(var item in cart.CartItems)
+            if (!string.IsNullOrEmpty(cart.CartHeader.CuponCode)) {
+                var coupon = await _couponService.GetDiscountCoupon(cart.CartHeader.CuponCode, token);
+
+                if (coupon?.CouponCode is not null)
+                    cart.CartHeader.Discount = coupon.Discount;
+            }
+
+            foreach (var item in cart.CartItems)
             {
                 cart.CartHeader.TotalAmount += item.Product.Price * item.Quantity;
             }
+
+            cart.CartHeader.TotalAmount -=  (cart.CartHeader.TotalAmount * cart.CartHeader.Discount) / 100;
         }
         return cart;
     }
 
-    [HttpPost]
-    [Authorize]
+    [HttpPost] 
     public async Task<IActionResult> ApplyCoupon(CartViewModel cartView)
     {
-        if (ModelState.IsValid)
-        {
-            var result = await _cartService.ApplyCouponAsync(cartView, await GetAccessToken());
+        if (ModelState.IsValid)        
+             await _cartService.ApplyCouponAsync(cartView, await GetAccessToken());
 
-            if (result)
-                return RedirectToAction(nameof(Index));
-        }
-
-        return View();
+            return RedirectToAction(nameof(Index));
     }
 
-    [HttpPost]
-    [Authorize]
+    [HttpPost] 
     public async Task<IActionResult> DeleteCoupon()
     {
         if (ModelState.IsValid)

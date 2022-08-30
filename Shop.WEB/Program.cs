@@ -8,30 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddHttpClient<IProductService, ProductService>("ProductApi", h =>
-{
-    h.BaseAddress = new Uri(builder.Configuration["ServiceUri:ProductApi"]);
-    h.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-    h.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-    h.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-ProductApi");
-});
-
-builder.Services.AddHttpClient<ICartService, CartService>("CartApi", h =>
-{
-    h.BaseAddress = new Uri(builder.Configuration["ServiceUri:CartApi"]);
-});
-
-builder.Services.AddHttpClient<ICouponService, CouponService>("DiscountApi", h =>
-{
-    h.BaseAddress = new Uri(builder.Configuration["ServiceUri:DiscountApi"]);
-});
-
-
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<ICartService, CartService>();
-builder.Services.AddScoped<ICouponService, CouponService>();
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
@@ -72,6 +48,33 @@ builder.Services.AddAuthentication(options =>
         options.Scope.Add("shop");
         options.SaveTokens = true;
     });
+
+
+builder.Services.AddHttpClient<IProductService, ProductService>("ProductApi", h =>
+{
+    h.BaseAddress = new Uri(builder.Configuration["ServiceUri:ProductApi"]);
+    h.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+    h.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+    h.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-ProductApi");
+});
+
+builder.Services.AddHttpClient<ICartService, CartService>("CartApi", h =>
+{
+    h.BaseAddress = new Uri(builder.Configuration["ServiceUri:CartApi"]);
+});
+
+builder.Services.AddHttpClient<ICouponService, CouponService>("DiscountApi", h =>
+{
+    h.BaseAddress = new Uri(builder.Configuration["ServiceUri:DiscountApi"]);
+});
+
+
+
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ICouponService, CouponService>();
+
 
 var app = builder.Build();
 

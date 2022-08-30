@@ -9,7 +9,7 @@ public class CouponService : ICouponService
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly JsonSerializerOptions _options;
-    private const string apiEndpoint = "/api/coupon/";
+    private const string apiEndpoint = "/api/coupon";
     private CouponViewModel _couponViewModel = new CouponViewModel();
 
     public CouponService(IHttpClientFactory httpClientFactory)

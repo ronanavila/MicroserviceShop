@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Shop.DiscountApi.Models;
 
 namespace Shop.DiscountApi.DTOs.Mappings;
 
 public class MappingProfile : Profile
 {
-    MappingProfile()
+    public MappingProfile()
     {
-        CreateMap<CoupontDTO, Coupon>().ReverseMap();
+        CreateMap<Coupon, CouponDTO>().ReverseMap();
     }
 }

@@ -4,5 +4,5 @@ namespace Shop.DiscountApi.Repositories;
 
 public interface ICouponRepository
 {
-    Task<CoupontDTO> GetCoupontByCode(string code);
+    Task<CouponDTO> GetCoupontByCode(string code);
 }
