@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.WEB.Models;
 using Shop.WEB.Services.Interfaces;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Shop.WEB.Controllers;
 
@@ -25,8 +26,8 @@ public class CartController : Controller
         {
             ModelState.AddModelError("CartNotFound", "Cart does not exist, start shopping");
             return View("/Views/Cart/CartNotFound.cshtml");
-        } 
-            
+        }
+
         return View(cartView);
     }
 
@@ -34,12 +35,13 @@ public class CartController : Controller
     private async Task<CartViewModel?> GetCartByUser()
     {
         var token = await GetAccessToken();
-        var cart = await _cartService.GetCartByUserIdAsync(GetUserId(),token );
+        var cart = await _cartService.GetCartByUserIdAsync(GetUserId(), token);
 
-        if(cart?.CartHeader is not null)
+        if (cart?.CartHeader is not null)
         {
-            if (!string.IsNullOrEmpty(cart.CartHeader.CuponCode)) {
-                var coupon = await _couponService.GetDiscountCoupon(cart.CartHeader.CuponCode, token);
+            if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
+            {
+                var coupon = await _couponService.GetDiscountCoupon(cart.CartHeader.CouponCode, token);
 
                 if (coupon?.CouponCode is not null)
                     cart.CartHeader.Discount = coupon.Discount;
@@ -50,21 +52,21 @@ public class CartController : Controller
                 cart.CartHeader.TotalAmount += item.Product.Price * item.Quantity;
             }
 
-            cart.CartHeader.TotalAmount -=  (cart.CartHeader.TotalAmount * cart.CartHeader.Discount) / 100;
+            cart.CartHeader.TotalAmount -= (cart.CartHeader.TotalAmount * cart.CartHeader.Discount) / 100;
         }
         return cart;
     }
 
-    [HttpPost] 
+    [HttpPost]
     public async Task<IActionResult> ApplyCoupon(CartViewModel cartView)
     {
-        if (ModelState.IsValid)        
-             await _cartService.ApplyCouponAsync(cartView, await GetAccessToken());
+        if (ModelState.IsValid)
+            await _cartService.ApplyCouponAsync(cartView, await GetAccessToken());
 
-            return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index));
     }
 
-    [HttpPost] 
+    [HttpPost]
     public async Task<IActionResult> DeleteCoupon()
     {
         if (ModelState.IsValid)
@@ -86,6 +88,12 @@ public class CartController : Controller
         }
 
         return View(id);
+    }
+    [HttpGet]
+    public async Task<IActionResult> Checkout()
+    {
+        CartViewModel? cartVM = await GetCartByUser();
+        return View(cartVM);
     }
 
     private async Task<string> GetAccessToken()

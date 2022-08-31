@@ -62,7 +62,7 @@ public class CartController : ControllerBase
     [HttpPost("applycoupon")]
     public async Task<ActionResult<CartDTO>> ApplyCoupon(CartDTO cartDTO)
     {
-        var result = await _cartRepository.ApplyCouponAsync(cartDTO.CartHeader.UserId, cartDTO.CartHeader.CuponCode);
+        var result = await _cartRepository.ApplyCouponAsync(cartDTO.CartHeader.UserId, cartDTO.CartHeader.CouponCode);
 
         if (!result)
         {
@@ -82,5 +82,19 @@ public class CartController : ControllerBase
         }
 
         return Ok(result);
+    }
+
+    [HttpPost("checkout")]
+    public async Task<ActionResult<CheckoutHeaderDTO>> Checkout(CheckoutHeaderDTO checkoutDTO)
+    {
+        var cart = await _cartRepository.GetCartByUserIdAsync(checkoutDTO.UserId);
+
+        if (cart is null)
+            return NotFound($"Cart Not Found {checkoutDTO.UserId}");
+
+        checkoutDTO.CartItems = cart.CartItems;
+        checkoutDTO.DateTime = DateTime.Now;
+
+        return Ok(checkoutDTO);
     }
 }

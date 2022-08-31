@@ -98,7 +98,7 @@ public class CartRepository : ICartRepository
         var cartHeaderApplyCoupon = await _appDbContext.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId);
         if(cartHeaderApplyCoupon is not null)
         {
-            cartHeaderApplyCoupon.CuponCode = couponCode;
+            cartHeaderApplyCoupon.CouponCode = couponCode;
 
             _appDbContext.CartHeaders.Update(cartHeaderApplyCoupon);
             await _appDbContext.SaveChangesAsync();
@@ -113,7 +113,7 @@ public class CartRepository : ICartRepository
         var cartHeaderDeleteCoupon = await _appDbContext.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId);
         if (cartHeaderDeleteCoupon is not null)
         {
-            cartHeaderDeleteCoupon.CuponCode = string.Empty;
+            cartHeaderDeleteCoupon.CouponCode = string.Empty;
 
             _appDbContext.CartHeaders.Update(cartHeaderDeleteCoupon);
             await _appDbContext.SaveChangesAsync();

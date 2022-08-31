@@ -132,7 +132,7 @@ public class CartService : ICartService
         return false;
     }
 
-    public Task<CartViewModel> CheckoutAsync(CartHeaderViewModel cartHeader, string token)
+    public Task<CartHeaderViewModel> CheckoutAsync(CartHeaderViewModel cartHeader, string token)
     {
         throw new NotImplementedException();
     }

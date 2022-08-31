@@ -24,7 +24,7 @@ public class AppDbContext : DbContext
 
         //CartHeader
         mb.Entity<CartHeader>().Property(c => c.UserId).HasMaxLength(255).IsRequired();
-        mb.Entity<CartHeader>().Property(c => c.CuponCode).HasMaxLength(100);
+        mb.Entity<CartHeader>().Property(c => c.CouponCode).HasMaxLength(100);
 
         //CartItem
       
